@@ -16,6 +16,7 @@ const HistoryItemState = (props)=>{
             }
           });
           const json = await response.json() 
+          console.log(json)
           sethistories(json)
     }
 

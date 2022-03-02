@@ -24,10 +24,10 @@ function PreviousHistory() {
                             <div className="table-responsive-sm">
 
                                 {
-                                    histories.history.length === 0 && <h6 className='text-center'> No previous records</h6>
+                                    histories.history !== undefined && histories.history.length === 0 && <h6 className='text-center'> No previous records</h6>
                                 }
                                 {
-                                    histories.history.length !== 0 &&
+                                   histories.history !== undefined && histories.history.length !== 0 &&
                                     <>
                                         <table className="table table-hover table-sm table-striped table-condensed table-bordered">
                                             <thead style={{ "color": "white" }}>
