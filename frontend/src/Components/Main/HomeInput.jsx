@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import WebcamCapture from "../WebcamCapture";
 import HomeHeader from "./HomeHeader";
 import './index.css';
 // import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 const HomeInput = () => {
+
+  const [image, setImage] = useState('')
+
   return (
     <div className=" InputContent p-2 ">
       <div className=" content border border-dark rounded-3 d-flex flex-column align-items-center ">
@@ -15,19 +19,20 @@ const HomeInput = () => {
             className="form-control-file border border-dark"
           ></input>
           <br />
-          <h4 className="my-3">Or</h4>
+          <h4 className="my-5">Or</h4>
           <label>
-            Capture Photo :  
-            <i className="fas fa-camera"></i>
+            {/* Capture Photo :
+            <i className="fas fa-camera"></i> */}
             {/* <PhotoCameraIcon className="border border-dark" /> */}
+            <WebcamCapture image={image} setImage={setImage} />
           </label>
         </div>
-        <img
+        {/* <img
           src=" "
           className="ImgPreview my-3 rounded bg-secondary bg-gradient"
           alt="Preview"
-        />
-        <button type="button" className="btn btn-outline-success my-2 ">
+        /> */}
+        <button type="button" className="btn btn-outline-success my-4 ">
           Generate Result
         </button>
       </div>
