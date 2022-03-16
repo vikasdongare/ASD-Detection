@@ -2,48 +2,48 @@ import React, { useState } from "react";
 import WebcamCapture from "../WebcamCapture";
 import HomeHeader from "./HomeHeader";
 import './index.css';
+import axios from 'axios';
 // import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 const HomeInput = () => {
 
 
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
   const [showImg, setShowImg] = useState(false);
-  const [postImage, setPostImage] = useState({
-    myFile: "",
-  });
 
   const generateResult = React.useCallback(
     () => {
       setShowImg(true);
     });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // createPost(postImage);
-    console.log(postImage);
+
+    const formData = new FormData();
+    formData.append('Image', image);
+
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+        'auth-token': localStorage.getItem('token')
+      }
+    };
+
+    const url = "http://localhost:5000/report/upload";
+    axios
+      .post(url, formData, config)
+      .then((response) => {
+        // console.log(response);
+        alert('Image Uploaded Suceesfully!');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      // fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-
-  const handleFileUpload = async (e) => {
-    const file = image;
-    const base64 = await convertToBase64(file);
-    console.log("Base64: ", base64);
-    setPostImage({ ...postImage, myFile: base64 });
-  };
-
+  const onChange = (e) => {
+    setImage(e.target.files[0]);
+  }
 
   return (
     <div className=" InputContent p-2 ">
@@ -54,6 +54,7 @@ const HomeInput = () => {
           <input
             type="file"
             className="form-control-file border border-dark"
+            onChange={onChange}
           ></input>
           <br />
           <h4 className="my-5">Or</h4>
@@ -61,7 +62,7 @@ const HomeInput = () => {
             {/* Capture Photo :  
             <i className="fas fa-camera"></i> */}
             {/* <PhotoCameraIcon className="border border-dark" /> */}
-            <WebcamCapture image={image} setImage={setImage} postImage={postImage} setPostImage={setPostImage} />
+            <WebcamCapture image={image} setImage={setImage} />
           </label>
         </div>
         {/* <img

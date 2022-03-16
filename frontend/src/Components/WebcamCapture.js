@@ -12,34 +12,44 @@ const videoConstraints = {
 
 function WebcamCapture(props) {
 
+    const [capturedImage, setcapturedImage] = useState(null);
     const webcamRef = React.useRef(null);
 
+    async function dataUrlToFile(dataUrl) {
+
+        const res = await fetch(dataUrl);
+        const blob = await res.blob();
+        return new File([blob], Date.now() + '.jpeg', { type: 'image/jpeg' });
+    }
 
     const capture = React.useCallback(
-        () => {
+        async () => {
             const imageSrc = webcamRef.current.getScreenshot();
-            props.setImage(imageSrc)
+            const newImage = await dataUrlToFile(imageSrc, imageSrc);
+            props.setImage(newImage);
+            setcapturedImage(imageSrc);
         });
 
     return (
         <div className="webcam-container">
             <div className="webcam-img">
 
-                {props.image === '' ? <Webcam
+                {capturedImage === '' ? <Webcam
                     audio={false}
                     height={200}
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
                     width={220}
                     videoConstraints={videoConstraints}
-                /> : <img id="inputImg" src={props.image} alt="Preview" />}
+                /> : <img id="inputImg" src={capturedImage} alt="Preview" />}
             </div>
             <div>
-                {props.image !== '' ?
-                    <button button type="button" className="btn btn-outline-warning my-2 "
+                {capturedImage !== '' ?
+                    <button type="button" className="btn btn-outline-warning my-2 "
                         onClick={(e) => {
                             e.preventDefault();
-                            props.setImage('')
+                            props.setImage('');
+                            setcapturedImage('');
                         }}
                     >
                         Retake Image</button> :
