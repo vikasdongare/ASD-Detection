@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import React, { useState } from 'react';
 import WebcamCapture from "../WebcamCapture";
 import HomeHeader from "./HomeHeader";
 import './index.css';
