@@ -3,6 +3,7 @@ import WebcamCapture from "../WebcamCapture";
 import HomeHeader from "./HomeHeader";
 import './index.css';
 import axios from 'axios';
+import * as tf from '@tensorflow/tfjs';
 // import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 const HomeInput = () => {
@@ -12,12 +13,16 @@ const HomeInput = () => {
   const [showImg, setShowImg] = useState(false);
 
   const generateResult = React.useCallback(
-    () => {
+    async () => {
       setShowImg(true);
+      const model = await tf.loadLayersModel('http://localhost:5000/model/model.json');
+      // const prediction = model.predict(image);
+      console.log(model);
     });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    generateResult();
 
     const formData = new FormData();
     formData.append('Image', image);

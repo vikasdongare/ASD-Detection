@@ -12,6 +12,7 @@ app.use('/profile', require('./routes/profile'))
 app.use('/report', require('./routes/report'))
 app.use('/history', require('./routes/history'))
 app.use('/uploads', express.static('uploads'))
+app.use('/model', express.static('assests/model'))
 
 app.listen(port, () => {
   console.log(`ASD app listening on port ${port}`)
