@@ -6,7 +6,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // console.log(req);
+        console.log("1")
         const userId = req.user.id
         const dir = `./uploads/${userId}`
         fs.exists(dir, exist => {
@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 });
 
 const filefilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
+    if ((file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg')) {
         cb(null, true);
     } else {
         cb(null, false);
@@ -34,10 +34,12 @@ const upload = multer({
     fileFilter: filefilter
 });
 
-router.post('/upload', fetchuser, upload.single('Image'), (req, res) => {
+router.post('/upload', fetchuser, upload.single('image'), (req, res) => {
     // res.json({ "image": req.json() })
-    res.json({ "res": "res" });
+    res.json({ "message": "Success", "path": "http://localhost:5000" + "\\" + req.file.path });
     console.log(req.file);
+    console.log();
+    // console.log("\n", req.body);
 })
 
 module.exports = router

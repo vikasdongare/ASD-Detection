@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 .background {
   width: 100vw;
   height: 100vh;
@@ -12,30 +13,36 @@
   height: 90%;
   width: 90%;
 }
+
 .nav {
   width: 10%;
 }
+
 .content {
   height: 100%;
   width: 100%;
 }
+
 .InputContent {
   height: 100%;
   width: 50%;
 }
+
 .ImgPreview {
   height: 50%;
   width: 80%;
   border: 2px dashed black;
 }
-.outputInfo {
+
+/* .outputInfo {
   height: 50%;
   width: 80%;
-}
+} */
 .customInput {
   border: 0px;
   background-color: transparent;
 }
+
 /*
 .menubar {
   width: 10%;

@@ -8,13 +8,14 @@ import './index.css';
 const MainBody = () => {
 
   const [predicted_output, setPredictedOutput] = useState(null);
+  const [submittedImg, setSubmittedImg] = useState(null);
 
   return (
     <div className="container">
       <div className=" MainBody border d-flex rounded-3 shadow-lg border-dark" style={{ "height": "80vh", "width": "140vh" }}>
         <Menubar />
-        <HomeInput predicted_output={predicted_output} setPredictedOutput={setPredictedOutput} />
-        <HomeOutput predicted_output={predicted_output} setPredictedOutput={setPredictedOutput} />
+        <HomeInput predicted_output={predicted_output} setPredictedOutput={setPredictedOutput} submittedImg={submittedImg} setSubmittedImg={setSubmittedImg} />
+        <HomeOutput predicted_output={predicted_output} setPredictedOutput={setPredictedOutput} submittedImg={submittedImg} setSubmittedImg={setSubmittedImg} />
       </div>
     </div>
   );

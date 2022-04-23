@@ -10,25 +10,11 @@ const HomeInput = (props) => {
 
 
   const [image, setImage] = useState(null);
-  const [showImg, setShowImg] = useState(false);
 
-  // const generateResult = React.useCallback(
-  //   async () => {
-  //     setShowImg(true);
-
-
-
-
-  //     // document.getElementById("inputImg").src = "...";
-  //     // document.getElementById("selectedImg").src = "...";
-  //     // setImage(null);
-
-  //   });
-
-  const uploadImage = async (img) => {
+  const uploadImage = async () => {
 
     const formData = new FormData();
-    formData.append('Image', img);
+    formData.append('image', image);
 
     const config = {
       headers: {
@@ -37,12 +23,19 @@ const HomeInput = (props) => {
       }
     };
 
+
     const url = "http://localhost:5000/report/upload";
+
     axios
       .post(url, formData, config)
       .then((response) => {
-        // console.log(response);
-        alert('Image Uploaded Suceesfully!');
+        console.log(response);
+        if (response.data.message == "Success") {
+          alert('Image Uploaded Suceesfully!');
+        }
+        if (response.data.path) {
+          props.setSubmittedImg(response.data.path);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -65,9 +58,9 @@ const HomeInput = (props) => {
       .toFloat()
       .expandDims();
 
-    const prediction = await model.predict(tensor).print();
-    // props.setPredictedOutput(prediction);
-    console.log(prediction);
+    const prediction = await model.predict(tensor).data();
+    setPredictionOutput(prediction[0]);
+    console.log(prediction[0]);
 
   }
 
@@ -87,12 +80,20 @@ const HomeInput = (props) => {
 
       let tensor = tf.browser.fromPixels(document.getElementById("selectedImg"))
         .resizeBilinear([64, 64])
-        // .toFloat()
+        .toFloat()
         .expandDims(0);
 
-      const prediction = await model.predict(tensor);
-      // props.setPredictedOutput(prediction.print());
-      console.log(prediction.print(), typeof prediction);
+      const prediction = await model.predict(tensor).data();
+      setPredictionOutput(prediction[0]);
+      console.log(prediction[0]);
+    }
+  }
+
+  const setPredictionOutput = (output) => {
+    if (output === 0) {
+      props.setPredictedOutput("Non-Autistic");
+    } else {
+      props.setPredictedOutput("Autistic");
     }
   }
 
