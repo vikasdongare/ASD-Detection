@@ -30,7 +30,7 @@ const HomeInput = (props) => {
       .post(url, formData, config)
       .then((response) => {
         console.log(response);
-        if (response.data.message == "Success") {
+        if (response.data.message === "Success") {
           alert('Image Uploaded Suceesfully!');
         }
         if (response.data.path) {
@@ -50,17 +50,9 @@ const HomeInput = (props) => {
     e.preventDefault();
 
     uploadImage(document.getElementById("selectedImg").src)
-
-    const model = await tf.loadLayersModel('http://localhost:5000/model/model.json');
     // console.log(document.getElementById("inputImg").src)
-    let tensor = tf.browser.fromPixels(document.getElementById("inputImg"))
-      .resizeNearestNeighbor([64, 64])
-      .toFloat()
-      .expandDims();
 
-    const prediction = await model.predict(tensor).data();
-    setPredictionOutput(prediction[0]);
-    console.log(prediction[0]);
+    makePrediction(document.getElementById("selectedImg"));
 
   }
 
@@ -69,7 +61,6 @@ const HomeInput = (props) => {
 
     uploadImage(document.getElementById("selectedImg").src)
 
-    const model = await tf.loadLayersModel('http://localhost:5000/model/model.json');
 
     let reader = new FileReader();
     reader.readAsDataURL(image);
@@ -78,19 +69,42 @@ const HomeInput = (props) => {
       document.getElementById("selectedImg").src = reader.result;
       // console.log(document.getElementById("selectedImg"))
 
-      let tensor = tf.browser.fromPixels(document.getElementById("selectedImg"))
-        .resizeBilinear([64, 64])
-        .toFloat()
-        .expandDims(0);
+      makePrediction(document.getElementById("selectedImg"));
 
-      const prediction = await model.predict(tensor).data();
-      setPredictionOutput(prediction[0]);
-      console.log(prediction[0]);
     }
   }
 
+  const makePrediction = async (input) => {
+
+    const model = await tf.loadLayersModel('http://localhost:5000/model/model.json');
+
+    let tensor = tf.browser.fromPixels(input)
+      .resizeBilinear([64, 64])
+      .toFloat()
+      .expandDims(0);
+
+    const output = model.predict(tensor);
+    const prediction = output.dataSync();
+    setPredictionOutput(prediction[0]);
+    console.log(prediction[0]);
+
+    const res = await fetch("http://localhost:5000/history/create", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "auth-token": localStorage.getItem('token')
+      },
+      body: JSON.stringify({
+        imagelink: props.submittedImg,
+        result: props.predicted_output
+      })
+    });
+
+    // console.log(res);
+  }
+
   const setPredictionOutput = (output) => {
-    if (output === 0) {
+    if (output >= 0.5) {
       props.setPredictedOutput("Non-Autistic");
     } else {
       props.setPredictedOutput("Autistic");

@@ -27,13 +27,13 @@ function PreviousHistory() {
                                     histories.history !== undefined && histories.history.length === 0 && <h6 className='text-center'> No previous records</h6>
                                 }
                                 {
-                                   histories.history !== undefined && histories.history.length !== 0 &&
+                                    histories.history !== undefined && histories.history.length !== 0 &&
                                     <>
                                         <table className="table table-hover table-sm table-striped table-condensed table-bordered">
                                             <thead style={{ "color": "white" }}>
                                                 <tr className='bg-secondary'>
                                                     <th scope="col" className="text-center py-2">Sr.No</th>
-                                                    <th scope="col" className="text-center py-2">Date</th>
+                                                    {/* <th scope="col" className="text-center py-2">Date</th> */}
                                                     <th scope="col" className="text-center py-2">Patient Image</th>
                                                     {/* <th scope="col" className="text-center py-2">Gender</th> */}
                                                     <th scope="col" className="text-center py-2">Status</th>

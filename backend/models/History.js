@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const HistorySchema = new Schema({
-    userid:{
+    userid: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: true
     },
-    imagelink:{
+    imagelink: {
         type: String,
         required: true
     },
-    report:{
+    result: {
         type: String,
         required: true
     }
-  });
-  const History = mongoose.model('history', HistorySchema);
-  module.exports = History;
+});
+const History = mongoose.model('history', HistorySchema);
+module.exports = History;

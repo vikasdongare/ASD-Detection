@@ -40,6 +40,6 @@ router.post('/upload', fetchuser, upload.single('image'), (req, res) => {
     console.log(req.file);
     console.log();
     // console.log("\n", req.body);
-})
+});
 
 module.exports = router
