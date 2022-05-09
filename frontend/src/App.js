@@ -21,7 +21,7 @@ function App() {
     <>
       <HistoryItemState>
         <BrowserRouter>
-          <div className="App">
+          <div data-testid="app-component" className="App">
             <Navbar login={login} setlogin={setlogin} logout={logout} />
             <Routes>
               <Route exact path="/" element={<Login login={login} setlogin={setlogin} />} />

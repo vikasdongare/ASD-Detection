@@ -49,7 +49,7 @@ function Login(props) {
             <div className="card style-card" >
                 <div className="row m-0" style={{ "height": "100%", "borderRadius": "50%" }}>
                     <div className="col px-5 my-auto">
-                        <form onSubmit={handleSubmit}>
+                        <form data-testid="login-form" onSubmit={handleSubmit}>
                             <h1 className="mb-5" style={{ "fontSize": "3em" }}><b>Get Started <br />for Free!</b></h1>
                             <div className="mb-3">
                                 {/* <label for="email" className="form-label">Email address</label> */}

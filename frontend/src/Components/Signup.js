@@ -12,31 +12,31 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // if (credentials.password == credentials.cpassword) {
-            const response = await fetch("http://localhost:5000/auth/signup", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: credentials.name.toString(),
-                    email: credentials.email.toString(),
-                    password: credentials.password.toString(),
-                    dob: credentials.date.toString(),
-                    mobileno: credentials.mobileNumber.toString()
-                })
-            });
-            const json = await response.json()
-            console.log(json);
-            if (json.success) {
-                // Save the auth token and redirect
-                localStorage.setItem('token', json.authtoken);
-                navigate("/login");
-                // props.setlogin(true);
-                alert("Signup Successfully!");
-            }
-            else {
-                alert("Invalid credentials");
-            }
+        const response = await fetch("http://localhost:5000/auth/signup", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: credentials.name.toString(),
+                email: credentials.email.toString(),
+                password: credentials.password.toString(),
+                dob: credentials.date.toString(),
+                mobileno: credentials.mobileNumber.toString()
+            })
+        });
+        const json = await response.json()
+        console.log(json);
+        if (json.success) {
+            // Save the auth token and redirect
+            localStorage.setItem('token', json.authtoken);
+            navigate("/login");
+            // props.setlogin(true);
+            alert("Signup Successfully!");
+        }
+        else {
+            alert("Invalid credentials");
+        }
         // }
         // else{
         //     alert("Passwords doesn't match")
@@ -55,7 +55,7 @@ function Signup() {
                         </div>
                     </div>
                     <div className="col px-5 my-auto">
-                        <form onSubmit={handleSubmit}>
+                        <form data-testid="signup-form" onSubmit={handleSubmit}>
                             <h1 className="mb-5 text-center" style={{ "fontSize": "3em" }}><b>Sign Up</b></h1>
                             <div className="mb-3">
                                 {/* <label for="email" className="form-label">Email address</label> */}

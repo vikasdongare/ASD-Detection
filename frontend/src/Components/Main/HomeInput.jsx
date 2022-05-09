@@ -112,7 +112,7 @@ const HomeInput = (props) => {
   }
 
   return (
-    <div className=" InputContent p-2 ">
+    <div data-testid="homeInput-component" className=" InputContent p-2 ">
       <div className=" content border border-dark rounded-3 d-flex flex-column align-items-center ">
         <HomeHeader heading="Input Image" />
         <div className=" text-center mt-5 form-group ">
