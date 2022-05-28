@@ -29,7 +29,7 @@ function App() {
               <Route exact path="/login" element={<Login login={login} setlogin={setlogin} />} />
               <Route exact path="/signup" element={<Signup />} />
               <Route exact path="/contactus" element={<Contactus />} />
-              <Route exact path="/aboutus" element={<Aboutus />} />
+              {/* <Route exact path="/aboutus" element={<Aboutus />} /> */}
               <Route exact path="/home" element={<MainBody />} />
               <Route exact path="/profile" element={<UserProfile />} />
               <Route exact path="/history" element={<History />} />

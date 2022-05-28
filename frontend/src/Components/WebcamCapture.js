@@ -11,8 +11,7 @@ const videoConstraints = {
 };
 
 function WebcamCapture(props) {
-
-    const [capturedImage, setcapturedImage] = useState(null);
+    let { capturedImage, setcapturedImage } = props;
     const webcamRef = React.useRef(null);
 
     async function dataUrlToFile(dataUrl) {

@@ -15,7 +15,7 @@ const HomeOutput = (props) => {
         </div>
         <div className="outputInfo border border-dark rounded mb-2">
           {props.submittedImg != null ?
-            <img src={props.submittedImg} alt="Submitted Image"></img>
+            <img src={props.submittedImg} alt="Submitted Image" width={200} height={200}></img>
             : ""}
         </div>
       </div>

@@ -4,12 +4,13 @@ import HomeHeader from "./HomeHeader";
 import './index.css';
 import axios from 'axios';
 import * as tf from '@tensorflow/tfjs';
-// import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+
 
 const HomeInput = (props) => {
 
 
   const [image, setImage] = useState(null);
+  const [capturedImage, setcapturedImage] = useState(null);
 
   const uploadImage = async () => {
 
@@ -29,7 +30,7 @@ const HomeInput = (props) => {
     axios
       .post(url, formData, config)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.data.message === "Success") {
           alert('Image Uploaded Suceesfully!');
         }
@@ -50,14 +51,13 @@ const HomeInput = (props) => {
     e.preventDefault();
 
     uploadImage(document.getElementById("selectedImg").src)
-    // console.log(document.getElementById("inputImg").src)
-
     makePrediction(document.getElementById("selectedImg"));
 
   }
 
   const selectedHandleSubmit = async (e) => {
     e.preventDefault();
+    setcapturedImage('');
 
     uploadImage(document.getElementById("selectedImg").src)
 
@@ -67,8 +67,6 @@ const HomeInput = (props) => {
     reader.onloadend = async () => {
 
       document.getElementById("selectedImg").src = reader.result;
-      // console.log(document.getElementById("selectedImg"))
-
       makePrediction(document.getElementById("selectedImg"));
 
     }
@@ -76,17 +74,18 @@ const HomeInput = (props) => {
 
   const makePrediction = async (input) => {
 
-    const model = await tf.loadLayersModel('http://localhost:5000/model/model.json');
+    const modelJson = 'http://localhost:5000/model/model.json';
+    const model = await tf.loadLayersModel(modelJson);
 
     let tensor = tf.browser.fromPixels(input)
-      .resizeBilinear([64, 64])
+      .resizeNearestNeighbor([64, 64])
       .toFloat()
-      .expandDims(0);
+      .expandDims();
 
     const output = model.predict(tensor);
     const prediction = output.dataSync();
     setPredictionOutput(prediction[0]);
-    console.log(prediction[0]);
+    // console.log(prediction[0]);
 
     const res = await fetch("http://localhost:5000/history/create", {
       method: 'POST',
@@ -132,7 +131,7 @@ const HomeInput = (props) => {
             {/* Capture Photo :  
             <i className="fas fa-camera"></i> */}
             {/* <PhotoCameraIcon className="border border-dark" /> */}
-            <WebcamCapture image={image} setImage={setImage} />
+            <WebcamCapture image={image} setImage={setImage} capturedImage={capturedImage} setcapturedImage={setcapturedImage} />
           </label>
         </div>
         {/* <img

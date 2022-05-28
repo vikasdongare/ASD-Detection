@@ -1,30 +1,30 @@
 import HistoryItemContext from './HistoryItemContext';
 import { useState } from 'react';
 
-const HistoryItemState = (props)=>{
+const HistoryItemState = (props) => {
 
-    const initial = {}
-    const [histories, sethistories] = useState(initial);
+  const initial = {}
+  const [histories, sethistories] = useState(initial);
 
-    const getHistory = async ()=>{
-        
-        const response = await fetch("http://localhost:5000/history/get", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              "auth-token": localStorage.getItem('token')
-            }
-          });
-          const json = await response.json() 
-          console.log(json)
-          sethistories(json)
-    }
+  const getHistory = async () => {
 
-    return (
-        <HistoryItemContext.Provider value={{ histories, sethistories, getHistory }}>
-          {props.children}
-        </HistoryItemContext.Provider>
-      )
+    const response = await fetch("http://localhost:5000/history/get", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "auth-token": localStorage.getItem('token')
+      }
+    });
+    const json = await response.json()
+    // console.log(json)
+    sethistories(json)
+  }
+
+  return (
+    <HistoryItemContext.Provider value={{ histories, sethistories, getHistory }}>
+      {props.children}
+    </HistoryItemContext.Provider>
+  )
 
 }
 
