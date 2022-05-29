@@ -49,9 +49,17 @@ const HomeInput = (props) => {
 
   const WebCamHandleSubmit = async (e) => {
     e.preventDefault();
+    document.getElementById("selectFile").value = '';
 
-    uploadImage(document.getElementById("selectedImg").src)
-    makePrediction(document.getElementById("selectedImg"));
+    let reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onloadend = async () => {
+
+      document.getElementById("selectedImg").src = reader.result;
+      uploadImage(document.getElementById("selectedImg").src)
+      makePrediction(document.getElementById("selectedImg"));
+
+    }
 
   }
 
@@ -59,14 +67,12 @@ const HomeInput = (props) => {
     e.preventDefault();
     setcapturedImage('');
 
-    uploadImage(document.getElementById("selectedImg").src)
-
-
     let reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onloadend = async () => {
 
       document.getElementById("selectedImg").src = reader.result;
+      uploadImage(document.getElementById("selectedImg").src)
       makePrediction(document.getElementById("selectedImg"));
 
     }
@@ -83,10 +89,13 @@ const HomeInput = (props) => {
       .expandDims();
 
     const output = model.predict(tensor);
-    const prediction = output.dataSync();
+    const prediction = await output.data();
     setPredictionOutput(prediction[0]);
-    // console.log(prediction[0]);
+    storeResult(props.submittedImg, props.predicted_output)
+    // console.log(res);
+  }
 
+  const storeResult = async (img, result) => {
     const res = await fetch("http://localhost:5000/history/create", {
       method: 'POST',
       headers: {
@@ -94,12 +103,10 @@ const HomeInput = (props) => {
         "auth-token": localStorage.getItem('token')
       },
       body: JSON.stringify({
-        imagelink: props.submittedImg,
-        result: props.predicted_output
+        imagelink: img,
+        result: result
       })
     });
-
-    // console.log(res);
   }
 
   const setPredictionOutput = (output) => {
@@ -116,7 +123,7 @@ const HomeInput = (props) => {
         <HomeHeader heading="Input Image" />
         <div className=" text-center mt-5 form-group ">
           <label> Select a file : &nbsp;</label>
-          <input
+          <input id="selectFile"
             type="file"
             className="form-control-file border border-dark"
             onChange={onChange}
